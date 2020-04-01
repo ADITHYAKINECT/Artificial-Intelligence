@@ -199,6 +199,6 @@ void TicTactoe::display(){
 }
 
 TicTactoe::~TicTactoe(){
-    cout << "The End\n";
+    cout << "Game object deleted\n";
 }
 

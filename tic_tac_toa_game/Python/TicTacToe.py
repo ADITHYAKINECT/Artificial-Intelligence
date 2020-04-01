@@ -113,7 +113,6 @@ def nextTurn(board,available,turn):
     print("{}'s turn".format(players[turn]))
     display(board)
 
-
 try:
     print("Press Control + C to terminate the Game")
     
