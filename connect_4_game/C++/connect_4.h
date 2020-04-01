@@ -36,9 +36,6 @@ class connect_4
         int evaluation(string* m);
         int count_steaks(string* m,int no_of_steaks,string playerID);
         
-        
-        
-        
     public:
         connect_4(bool turn);
         void play_game();
