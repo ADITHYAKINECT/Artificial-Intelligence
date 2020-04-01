@@ -175,7 +175,6 @@ void connect_4::play_game(){
             }
             else if(turn){
                 position = minimax(start_address(board),1,AI);
-                cout<<"AI position: "<<position<<"\n";
                 board[position] = AI;
                 turn = !turn;
             }
@@ -185,5 +184,5 @@ void connect_4::play_game(){
 }    
 
 connect_4::~connect_4(){
-    cout<<"Have a nice day!"<<endl;
+    cout<<"Game object deleted\n"<<endl;
 }

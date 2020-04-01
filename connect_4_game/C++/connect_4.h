@@ -21,19 +21,23 @@ class connect_4
         bool turn;
         int position;
         bool valid;
+        string winner;
+        int p_value,n_value;
+
+        void clear();
+        void display(string* m);
+        int is_full(string* m);
         bool check_valid(int pos);
-        void placement(int pos,bool turn);
         bool equal_4(string a, string b, string c, string d);
         string check_winner(string* m);
-        string winner;
-        int is_full(string* m);
-        int minimax(string* m, int depth, string maximizingPlayer);
+        void placement(int pos,bool turn);
         void children(string* m,list<int>* l);
+        int minimax(string* m, int depth, string maximizingPlayer);
         int evaluation(string* m);
         int count_steaks(string* m,int no_of_steaks,string playerID);
-        int p_value,n_value;
-        void display(string* m);
-        void clear();
+        
+        
+        
         
     public:
         connect_4(bool turn);
