@@ -2,7 +2,7 @@ import random
 import time
 import copy
 
-board = ["_","_","_","_","_","_","_","_","_"]
+board =["_" for i in range(9)]
 rows = 3
 columns = 3  
 players = ["O","X"]
