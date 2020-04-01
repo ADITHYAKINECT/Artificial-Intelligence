@@ -6,7 +6,7 @@ connect_4::connect_4(bool turn){
     this->turn = turn;
     board = new string[rows*columns];
     clear();
-    display();
+    display(start_address(board));
 }
 
 void connect_4::clear(){
@@ -17,16 +17,7 @@ void connect_4::clear(){
     }
 }
 
-void connect_4::display(){
-    for(int i=0;i<rows;i++){
-        for (int j = 0; j < columns; j++){
-            cout << board[columns * i + j] << ' ';
-        }
-        cout <<"\n";
-    }
-}
-
-void d(string* m){
+void connect_4::display(string* m){
     for(int i=0;i<rows;i++){
         for (int j = 0; j < columns; j++){
             cout << m[columns * i + j] << ' ';
@@ -36,7 +27,6 @@ void d(string* m){
 }
 
 // returns 0 if the board is full
-
 int connect_4::is_full(string* m){
     return count(m, m + rows * columns, "_");   
 }
@@ -89,7 +79,7 @@ string connect_4::check_winner(string* m){
         }
     } 
 
-    if(is_full(&m[0]) == 0 && winner == "\0"){winner = TIE;}   
+    if(is_full(start_address(m)) == 0 && winner == "\0"){winner = TIE;}   
     return winner;  
 }
 
@@ -116,9 +106,7 @@ void connect_4::children(string* m,list<int>* l){
                 l->push_back(cell_id);
                 break;
             }
-            else{
-                l->remove(cell_id);
-            }   
+            else{ l->remove(cell_id);}   
         }
     }
 }
@@ -129,23 +117,23 @@ int connect_4::minimax(string* m, int depth, string maximizing_player){
     list<int>::iterator cit;
     string* child = new string[rows*columns]; ;
     int child_pos;
-    string local_winner = check_winner(&m[0]);
+    string local_winner = check_winner(start_address(m));
     
-    if( depth == 0 || (is_full(&m[0]) == 0) ||  local_winner !="\0"){
+    if( depth == 0 || (is_full(start_address(m)) == 0) ||  local_winner !="\0"){
         if ( local_winner == AI ){return 100000;}
         else if( local_winner == AI ){return -100000;}
         else if ( local_winner == TIE ){return 0;}
         // handle case when depth = 0
     }
 
-    children(&m[0],&child_positions);
+    children(start_address(m),&child_positions);
 
     if (maximizing_player == AI){
         p_value = INT_MIN;
         for (cit = child_positions.begin(); cit != child_positions.end(); cit++){
             copy(m->begin(),m->end(),child);
             child[(*cit)] = AI;
-            n_value = minimax(&child[0],depth-1,User);
+            n_value = minimax(start_address(child),depth-1,User);
             if(n_value > p_value){
                 p_value = n_value;
                 child_pos = (*cit);
@@ -159,7 +147,7 @@ int connect_4::minimax(string* m, int depth, string maximizing_player){
         for (cit = child_positions.begin(); cit != child_positions.end(); cit++){
             copy(m->begin(),m->end(),child);
             child[(*cit)] = User;
-            n_value = minimax(&child[0],depth-1,AI);
+            n_value = minimax(start_address(child),depth-1,AI);
             if(n_value < p_value){
                 p_value = n_value;
                 child_pos = (*cit);
@@ -170,16 +158,8 @@ int connect_4::minimax(string* m, int depth, string maximizing_player){
 }
 
 void connect_4::play_game(){
-    while (is_full(&board[0])){
-        string win = check_winner(&board[0]);
-        cout<<win<<"\n";
-        // list<int> child_positions;
-        // list<int>::iterator cit;
-        // children(&board[0],&child_positions);
-        // for(cit = child_positions.begin(); cit != child_positions.end(); cit++){
-        //     cout<<(*cit)<<" ";
-        // }
-        cout<<"\n";
+    while (is_full(start_address(board))){
+        string win = check_winner(start_address(board));
         if( win != "\0"){
             cout << win << "\n";
             break;
@@ -194,17 +174,12 @@ void connect_4::play_game(){
                 } 
             }
             else if(turn){
-                // cout<<"Enter a number between 0 to 6: "<<"\n";
-                // cin >> position;
-                // if(check_valid(position)){
-                //     placement(position,!turn);
-                //     turn = !turn;
-                // }
-                position = minimax(&board[0],1,AI);
+                position = minimax(start_address(board),1,AI);
+                cout<<"AI position: "<<position<<"\n";
                 board[position] = AI;
                 turn = !turn;
             }
-            display();
+            display(start_address(board));
         }
     }
 }    
